@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113737852184",
+    "project_id": "trek-mate-5d7cc",
+    "storage_bucket": "trek-mate-5d7cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113737852184:android:946a266ea68da0e7ed2a6d",
+        "android_client_info": {
+          "package_name": "com.example.trek_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqmJPnt8svn0zMALmQGcon6QlZ4EhxTJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
