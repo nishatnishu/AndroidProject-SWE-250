@@ -4,7 +4,7 @@ import 'package:trek_mate/pages/onboard_travel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Ensure Firebase is properly initialized
+  await Firebase.initializeApp(); 
 
   runApp(const MyApp());
 }

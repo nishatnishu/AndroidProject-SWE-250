@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:trek_mate/pages/homeScreen.dart';
 
@@ -13,7 +15,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   bool _isChecked = false;
   bool _showCheckboxError = false;
 
-  // Controllers for TextFields
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -39,8 +41,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         return;
       }
 
-      // If form is valid and checkbox is checked, navigate to HomeScreen
-      Navigator.pushReplacement(
+            Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
@@ -60,7 +61,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           ),
           Positioned.fill(
             child: Container(
-              // ignore: deprecated_member_use
+
               color: Colors.black.withOpacity(0.4),
             ),
           ),
@@ -72,7 +73,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: Container(
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
-                    // ignore: deprecated_member_use
                     color: Colors.white.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(15),
                   ),

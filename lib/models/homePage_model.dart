@@ -148,7 +148,7 @@ TravelDestination(
  image: [
   "assets/images/recommendedPlace/Pushpatinath01.jpeg",
   "assets/images/recommendedPlace/Pushpatinath02.jpeg",
-  "assets/images/recommendedPlace/Pushpatinath03.jpg", // Corrected!
+  "assets/images/recommendedPlace/Pushpatinath03.jpg", 
 ],
   location: "Kathmandu, Nepal",
   review: random.nextInt(300) + 25,

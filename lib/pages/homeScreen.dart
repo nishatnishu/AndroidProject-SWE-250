@@ -1,12 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:trek_mate/models/homePage_model.dart';
+import 'package:trek_mate/pages/placeDetailsScreen.dart';
 import 'package:trek_mate/widgets/popularPlace.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:trek_mate/const.dart';
-import 'package:trek_mate/widgets/recommend.dart'; // Make sure this import is correct
-
+import 'package:trek_mate/widgets/recommend.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int selectedPage = 0;
   List<IconData> icons = [
     Iconsax.home1,
@@ -26,25 +25,26 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.person_outline,
   ];
 
-  //for popular
   List<TravelDestination> popular =
       myDestination.where((element) => element.category == "popular").toList();
-      //recommed
-        List<TravelDestination>recommend =
+
+  List<TravelDestination> recommend =
       myDestination.where((element) => element.category == "recommend").toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BackgroundColor,
       appBar: headerParts(),
-      body: Column( 
-        children: [ 
-          const SizedBox(height: 20), 
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          // Popular Places Section
           const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15), 
-            child: Row( 
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [ 
+              children: [
                 Text(
                   "Popular Place",
                   style: TextStyle(
@@ -64,29 +64,47 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 15), 
+          const SizedBox(height: 15),
+          // Horizontal Scroll for Popular Places
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(bottom: 40), 
+            padding: const EdgeInsets.only(bottom: 40),
             child: Row(
-              children: List.generate(popular.length,
-              (index)=> Padding(padding: EdgeInsets.symmetric(horizontal: 15),
-              child: GestureDetector(
-                onTap: () {},
-                child: PopularPlace(
-                  destination: popular[index],
-                  
-                 ),
-              ),
-              )
+              children: List.generate(
+                popular.length,
+                (index) => Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlaceDetailsPage(destination: popular[index]),
+                        ),
+                      );
+                    },
+                    child: PopularPlace(
+                      destination: popular[index],
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaceDetailsPage(destination: popular[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15), 
-            child: Row( 
+          // Recommendations Section
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [ 
+              children: const [
                 Text(
                   "Recommendation for you♡",
                   style: TextStyle(
@@ -107,39 +125,54 @@ const Padding(
             ),
           ),
           const SizedBox(height: 20),
+          // Vertical Scroll for Recommendations
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.symmetric(horizontal: 15), 
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: List.generate(
                   recommend.length,
-                (index)=> Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: RecommendedPlace(
-                      destination: recommend[index],
-                      
-                     ),
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaceDetailsPage(destination: recommend[index]),
+                          ),
+                        );
+                      },
+                      child: RecommendedPlace(
+                        destination: recommend[index],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlaceDetailsPage(destination: recommend[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                )
                 ),
               ),
             ),
           ),
-          //for bottom alignment: 
-           Align(
+          // Bottom Navigation Bar
+          Align(
             alignment: Alignment.bottomCenter,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 9,
                         ),
@@ -162,7 +195,6 @@ const Padding(
                                 size: 32,
                                 color: selectedPage == index
                                     ? Colors.white
-                              
                                     : Colors.white.withOpacity(0.4),
                               ),
                             ),
@@ -175,12 +207,13 @@ const Padding(
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
+  // AppBar with location and notification icon
   AppBar headerParts() {
     return AppBar(
       elevation: 0,
@@ -193,8 +226,6 @@ const Padding(
             Iconsax.location,
             color: Color.fromARGB(237, 224, 23, 8),
             size: 24,
-        
-            
           ),
           SizedBox(width: 5),
           Text(
@@ -203,7 +234,6 @@ const Padding(
               fontWeight: FontWeight.w700,
               fontSize: 16,
               color: Colors.black,
-             // fontFamily: 
             ),
           ),
           Icon(

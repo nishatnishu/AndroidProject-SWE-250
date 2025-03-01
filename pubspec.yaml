@@ -88,16 +88,16 @@ flutter:
     - assets/images/recommendedPlace/Annapurna02.jpeg
     - assets/images/recommendedPlace/Annapurna03.jpeg
     - assets/images/recommendedPlace/Bhaktapur01.jpg
-    - assets/images/recommendedPlace/Bhaktapur02.jpg
-    - assets/images/recommendedPlace/Bhaktapur03.jpg
-    - assets/images/recommendedPlace/Bhaktapur04.jpg
-    - assets/images/recommendedPlace/Bhaktapur05.jpg
-    - assets/images/recommendedPlace/Chitwan01.jpg
-    - assets/images/recommendedPlace/Chitwan02.jpg
-    - assets/images/recommendedPlace/Chitwan03.jpg
-    - assets/images/recommendedPlace/Chitwan04.jpg
-    - assets/images/recommendedPlace/Pushpatinath01.jpg
-    - assets/images/recommendedPlace/Pushpatinath02.jpg
+    - assets/images/recommendedPlace/Bhaktapur02.jpeg
+    - assets/images/recommendedPlace/Bhaktapur03.jpeg
+    - assets/images/recommendedPlace/Bhaktapur04.jpeg
+    - assets/images/recommendedPlace/Bhaktapur05.jpeg
+    - assets/images/recommendedPlace/Chitwan01.jpeg
+    - assets/images/recommendedPlace/Chitwan02.jpeg
+    - assets/images/recommendedPlace/Chitwan03.jpeg
+    - assets/images/recommendedPlace/Chitwan04.jpeg
+    - assets/images/recommendedPlace/Pushpatinath01.jpeg
+    - assets/images/recommendedPlace/Pushpatinath02.jpeg
     - assets/images/recommendedPlace/Pushpatinath03.jpg
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -117,3 +117,6 @@ flutter:
     - family: CheeseOrange-Regular
       fonts:
         - asset: fonts/CheeseOrange-Regular.otf
+    - family: Haloberry
+      fonts:
+        - asset: fonts/Haloberry.otf
