@@ -8,7 +8,7 @@ class RecommendedPlace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 105,
+      height: 120,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -26,9 +26,8 @@ class RecommendedPlace extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(
-                  destination.image![0],
-                ),
+                // Use AssetImage for local assets
+                image: AssetImage(destination.image![0]),
               ),
             ),
           ),
@@ -58,7 +57,8 @@ class RecommendedPlace extends StatelessWidget {
                       destination.location,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.black.withOpacity(0.6),
+                        // ignore: deprecated_member_use
+                        color: Colors.black.withOpacity(1),
                       ),
                     )
                   ],
@@ -66,30 +66,31 @@ class RecommendedPlace extends StatelessWidget {
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "${destination.rate}",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " (${destination.review} reviews)",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.6),
-                            ),
-                          ),
-                        ],
+                    const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 16, // Adjust size if needed
+                    ),
+                    const SizedBox(width: 5), // Add spacing between icon and text
+                    Text(
+                      "${destination.rate}",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 5), // Add spacing between rating and review count
+                    Text(
+                      "(${destination.review} reviews)",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black.withOpacity(0.9),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -110,6 +111,7 @@ class RecommendedPlace extends StatelessWidget {
                       text: " /Person",
                       style: TextStyle(
                         fontSize: 12,
+                        // ignore: deprecated_member_use
                         color: Colors.black.withOpacity(0.6),
                       ),
                     ),

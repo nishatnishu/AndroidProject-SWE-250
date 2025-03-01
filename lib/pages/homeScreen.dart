@@ -1,8 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:trek_mate/models/homePage_model.dart';
 import 'package:trek_mate/widgets/popularPlace.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:trek_mate/const.dart'; // Make sure this import is correct
+import 'package:trek_mate/const.dart';
+import 'package:trek_mate/widgets/recommend.dart'; // Make sure this import is correct
 
 
 class HomeScreen extends StatefulWidget {
@@ -13,22 +16,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  int selectedPage = 0;
+  List<IconData> icons = [
+    Iconsax.home1,
+    Iconsax.search_normal,
+    Icons.confirmation_number_outlined,
+    Icons.bookmark_outline,
+    Icons.person_outline,
+  ];
+
   //for popular
   List<TravelDestination> popular =
       myDestination.where((element) => element.category == "popular").toList();
+      //recommed
+        List<TravelDestination>recommend =
+      myDestination.where((element) => element.category == "recommend").toList();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BackgroundColor,
       appBar: headerParts(),
-      body: Column( // Removed const here
-        children: [ // Removed const here
-          const SizedBox(height: 20), // Added const here
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15), // Added const here
-            child: Row( // Added const here
+      body: Column( 
+        children: [ 
+          const SizedBox(height: 20), 
+          const Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15), 
+            child: Row( 
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [ // Added const here
+              children: const [ 
                 Text(
                   "Popular Place",
                   style: TextStyle(
@@ -48,23 +64,118 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 15), // Added const here
+          const SizedBox(height: 15), 
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(bottom: 40), // Added const here
+            padding: const EdgeInsets.only(bottom: 40), 
             child: Row(
               children: List.generate(popular.length,
               (index)=> Padding(padding: EdgeInsets.symmetric(horizontal: 15),
               child: GestureDetector(
                 onTap: () {},
-                child: PopularPlace(destination: popular[index],
-                
+                child: PopularPlace(
+                  destination: popular[index],
+                  
                  ),
               ),
               )
               ),
             ),
           ),
+const Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15), 
+            child: Row( 
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [ 
+                Text(
+                  "Recommendation for you♡",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  "See all",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: blueTextColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.symmetric(horizontal: 15), 
+              child: Column(
+                children: List.generate(
+                  recommend.length,
+                (index)=> Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: RecommendedPlace(
+                      destination: recommend[index],
+                      
+                     ),
+                  ),
+                )
+                ),
+              ),
+            ),
+          ),
+          //for bottom alignment: 
+           Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 9,
+                        ),
+                        decoration: BoxDecoration(
+                          color: ButtonColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: List.generate(
+                            icons.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedPage = index;
+                                });
+                              },
+                              child: Icon(
+                                icons[index],
+                                size: 32,
+                                color: selectedPage == index
+                                    ? Colors.white
+                              
+                                    : Colors.white.withOpacity(0.4),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -74,21 +185,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
-      leadingWidth: 180,
+      leadingWidth: 170,
       leading: const Row(
         children: [
-          SizedBox(width: 15),
+          SizedBox(width: 13),
           Icon(
             Iconsax.location,
-            color: Colors.black,
+            color: Color.fromARGB(237, 224, 23, 8),
+            size: 24,
+        
+            
           ),
           SizedBox(width: 5),
           Text(
             "Bangladesh",
             style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
               color: Colors.black,
+             // fontFamily: 
             ),
           ),
           Icon(
@@ -118,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 top: 5,
                 right: 5,
                 child: CircleAvatar(
-                  radius: 5,
+                  radius: 3,
                   backgroundColor: Colors.red,
                 ),
               ),

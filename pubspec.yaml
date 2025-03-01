@@ -67,28 +67,38 @@ flutter:
     - assets/images/WorldPeacePagoda.jpg
     - assets/images/createAccount.jpeg
     - assets/images/logIn.jpg
-    - assets/images/homepageimg/Everest01.jpeg
-    - assets/images/homepageimg/Everest02.jpeg
-    - assets/images/homepageimg/Everest03.jpeg
-    - assets/images/homepageimg/Everest04.jpeg
-    - assets/images/homepageimg/Everest05.jpeg
-    - assets/images/homepageimg/KarnaliRiver01.jpeg
-    - assets/images/homepageimg/KarnaliRiver02.jpeg
-    - assets/images/homepageimg/KarnaliRiver03.jpeg
-    - assets/images/homepageimg/KarnaliRiver04.jpeg
-    - assets/images/homepageimg/Kathmandu01.jpeg
-    - assets/images/homepageimg/Kathmandu02.jpeg
-    - assets/images/homepageimg/Kathmandu03.jpeg
-    - assets/images/homepageimg/Kathmandu04.jpeg
-    - assets/images/homepageimg/Kathmandu05.jpeg
-    - assets/images/homepageimg/PashupatinathTemple01.jpeg
-    - assets/images/homepageimg/PashupatinathTemple02.jpeg
-    - assets/images/homepageimg/PashupatinathTemple03.jpeg
-    - assets/images/homepageimg/Pokhara01.jpeg
-    - assets/images/homepageimg/Pokhara02.jpeg
-    - assets/images/homepageimg/Pokhara03.jpeg
-    - assets/images/homepageimg/Pokhara04.jpeg
-
+    - assets/images/popularPlace/Everest01.jpeg
+    - assets/images/popularPlace/Everest02.jpeg
+    - assets/images/popularPlace/Everest03.jpeg
+    - assets/images/popularPlace/Everest04.jpeg
+    - assets/images/popularPlace/Everest05.jpeg
+    - assets/images/popularPlace/KarnaliRiver01.jpeg
+    - assets/images/popularPlace/KarnaliRiver02.jpeg
+    - assets/images/popularPlace/KarnaliRiver03.jpeg
+    - assets/images/popularPlace/Kathmandu01.jpeg
+    - assets/images/popularPlace/Kathmandu02.jpeg
+    - assets/images/popularPlace/Kathmandu03.jpeg
+    - assets/images/popularPlace/Kathmandu04.jpeg
+    - assets/images/popularPlace/Kathmandu05.jpeg
+    - assets/images/popularPlace/Pokhara01.jpeg
+    - assets/images/popularPlace/Pokhara02.jpeg
+    - assets/images/popularPlace/Pokhara03.jpeg
+    - assets/images/popularPlace/Pokhara04.jpeg
+    - assets/images/recommendedPlace/Annapurna01.jpeg
+    - assets/images/recommendedPlace/Annapurna02.jpeg
+    - assets/images/recommendedPlace/Annapurna03.jpeg
+    - assets/images/recommendedPlace/Bhaktapur01.jpg
+    - assets/images/recommendedPlace/Bhaktapur02.jpg
+    - assets/images/recommendedPlace/Bhaktapur03.jpg
+    - assets/images/recommendedPlace/Bhaktapur04.jpg
+    - assets/images/recommendedPlace/Bhaktapur05.jpg
+    - assets/images/recommendedPlace/Chitwan01.jpg
+    - assets/images/recommendedPlace/Chitwan02.jpg
+    - assets/images/recommendedPlace/Chitwan03.jpg
+    - assets/images/recommendedPlace/Chitwan04.jpg
+    - assets/images/recommendedPlace/Pushpatinath01.jpg
+    - assets/images/recommendedPlace/Pushpatinath02.jpg
+    - assets/images/recommendedPlace/Pushpatinath03.jpg
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
