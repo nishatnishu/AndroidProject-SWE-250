@@ -116,9 +116,9 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                 'Cancel',
                 style: TextStyle(
-        fontSize: 18, // Increase font size
-        fontWeight: FontWeight.bold, // Make text bold
-        color: Color.fromARGB(255, 19, 19, 19), // Change text color to red
+        fontSize: 18, 
+        fontWeight: FontWeight.bold,
+        color: Color.fromARGB(255, 19, 19, 19), 
       ),
                 ),
             ),
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                         content: Text('Password reset email sent. Check your inbox.'),
                       ),
                     );
-                    Navigator.pop(context); // Close the dialog
+                    Navigator.pop(context);
                   } on FirebaseAuthException catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -154,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                 'Send',
                 style: TextStyle(
         fontSize: 18,
-        fontWeight: FontWeight.bold, // Make text bold
-        color: Color.fromARGB(255, 10, 235, 163), // Change text color to white
+        fontWeight: FontWeight.bold, 
+        color: Color.fromARGB(255, 10, 235, 163), 
       ),
                 ),
             ),
@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: _showForgotPasswordDialog, // Call the dialog
+                            onPressed: _showForgotPasswordDialog,
                             child: const Text(
                               "Forgot Password?",
                               style: TextStyle(
