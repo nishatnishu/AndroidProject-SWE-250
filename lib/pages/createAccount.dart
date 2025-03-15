@@ -1,7 +1,7 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trek_mate/pages/homeScreen.dart';
+import 'package:trek_mate/pages/email_verification_page.dart'; // Import the new EmailVerificationPage
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -14,7 +14,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
   bool _showCheckboxError = false;
-
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -32,7 +31,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       if (!_isChecked) {
         setState(() {
@@ -41,10 +40,36 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         return;
       }
 
-            Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Send verification email
+        await userCredential.user!.sendEmailVerification();
+
+        // Navigate to EmailVerificationPage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EmailVerificationPage(user: userCredential.user!),
+          ),
+        );
+
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+        if (e.code == 'weak-password') {
+          errorMessage = 'The password provided is too weak.';
+        } else if (e.code == 'email-already-in-use') {
+          errorMessage = 'The account already exists for that email.';
+        } else {
+          errorMessage = e.message ?? 'An error occurred. Please try again.';
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
     }
   }
 
@@ -61,7 +86,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           ),
           Positioned.fill(
             child: Container(
-
               color: Colors.black.withOpacity(0.4),
             ),
           ),
@@ -126,7 +150,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            labelText: 'Phone/Email',
+                            labelText: 'Email',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -134,7 +158,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             fillColor: const Color.fromRGBO(255, 255, 255, 0.7),
                           ),
                           validator: (value) =>
-                              value == null || value.isEmpty ? "Email/Phone is required" : null,
+                              value == null || value.isEmpty ? "Email is required" : null,
                         ),
                         const SizedBox(height: 10),
                         TextFormField(

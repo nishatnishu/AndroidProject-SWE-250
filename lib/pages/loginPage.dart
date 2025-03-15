@@ -1,6 +1,5 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trek_mate/pages/homeScreen.dart';
 import 'package:trek_mate/pages/createAccount.dart';
 
@@ -26,13 +25,144 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+        if (e.code == 'user-not-found') {
+          errorMessage = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          errorMessage = 'Wrong password provided for that user.';
+        } else if (e.code == 'invalid-email') {
+          errorMessage = 'The email address is badly formatted.';
+        } else if (e.code == 'user-disabled') {
+          errorMessage = 'The user account has been disabled.';
+        } else {
+          errorMessage = e.message ?? 'An error occurred. Please try again.';
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
     }
+  }
+
+  // Forgot Password Functionality
+  Future<void> _showForgotPasswordDialog() async {
+    final TextEditingController _resetEmailController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+         title: const Text(
+  'Forgot Password!🤦‍♀️',
+  style: TextStyle(
+    fontSize: 24, // Increase font size
+    fontWeight: FontWeight.bold, // Make text bold
+    fontStyle: FontStyle.italic, // Make text italic
+  ),
+),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+            'Enter your email to reset your password',
+            style: TextStyle(
+              fontSize: 15.5, 
+               // fontWeight: FontWeight.bold,
+ 
+            ),
+          ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _resetEmailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your email";
+                  }
+                  if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                      .hasMatch(value)) {
+                    return "Enter a valid email address";
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+        fontSize: 18, // Increase font size
+        fontWeight: FontWeight.bold, // Make text bold
+        color: Color.fromARGB(255, 19, 19, 19), // Change text color to red
+      ),
+                ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (_resetEmailController.text.isNotEmpty) {
+                  try {
+                    await FirebaseAuth.instance.sendPasswordResetEmail(
+                      email: _resetEmailController.text,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Password reset email sent. Check your inbox.'),
+                      ),
+                    );
+                    Navigator.pop(context); // Close the dialog
+                  } on FirebaseAuthException catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error: ${e.message}'),
+                      ),
+                    );
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter your email address.'),
+                    ),
+                  );
+                }
+              },
+              child: const Text(
+                'Send',
+                style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold, // Make text bold
+        color: Color.fromARGB(255, 10, 235, 163), // Change text color to white
+      ),
+                ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -42,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/logIn.jpg', 
+              'assets/images/logIn.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -55,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: SingleChildScrollView(
-                child: Container( 
+                child: Container(
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 167, 233, 233).withOpacity(0.8),
@@ -136,11 +266,13 @@ class _LoginPageState extends State<LoginPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: _showForgotPasswordDialog, // Call the dialog
                             child: const Text(
                               "Forgot Password?",
-                              style: TextStyle(color: Colors.brown, fontSize: 17),
-                              
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 3, 130, 49),
+                                fontSize: 17,
+                              ),
                             ),
                           ),
                         ),
@@ -189,7 +321,7 @@ class _LoginPageState extends State<LoginPage> {
                                 TextSpan(
                                   text: "Sign Up",
                                   style: TextStyle(
-                                    color: Colors.brown,
+                                    color: Color.fromARGB(255, 3, 130, 49),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20,
                                   ),

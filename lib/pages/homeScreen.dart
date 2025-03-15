@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          // Vertical Scroll for Recommendations
+          // Scroll
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
