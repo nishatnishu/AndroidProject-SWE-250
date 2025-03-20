@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trek_mate/pages/homeScreen.dart';
 import 'package:trek_mate/pages/createAccount.dart';
-
+import 'package:trek_mate/pages/google_auth.dart'; 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  final GoogleAuth _googleAuth = GoogleAuth(); 
 
   @override
   void dispose() {
@@ -57,7 +58,22 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Forgot Password Functionality
+  Future<void> _signInWithGoogle() async {
+    try {
+      final UserCredential? userCredential = await _googleAuth.signInWithGoogle();
+      if (userCredential != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign in with Google: $e')),
+      );
+    }
+  }
+
   Future<void> _showForgotPasswordDialog() async {
     final TextEditingController _resetEmailController = TextEditingController();
 
@@ -65,25 +81,23 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-         title: const Text(
-  'Forgot Password!🤦‍♀️',
-  style: TextStyle(
-    fontSize: 24, // Increase font size
-    fontWeight: FontWeight.bold, // Make text bold
-    fontStyle: FontStyle.italic, // Make text italic
-  ),
-),
+          title: const Text(
+            'Forgot Password!🤦‍♀️',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-            'Enter your email to reset your password',
-            style: TextStyle(
-              fontSize: 15.5, 
-               // fontWeight: FontWeight.bold,
- 
-            ),
-          ),
+                'Enter your email to reset your password',
+                style: TextStyle(
+                  fontSize: 15.5,
+                ),
+              ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: _resetEmailController,
@@ -116,11 +130,11 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                 'Cancel',
                 style: TextStyle(
-        fontSize: 18, 
-        fontWeight: FontWeight.bold,
-        color: Color.fromARGB(255, 19, 19, 19), 
-      ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 19, 19, 19),
                 ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -153,11 +167,11 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                 'Send',
                 style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold, 
-        color: Color.fromARGB(255, 10, 235, 163), 
-      ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 10, 235, 163),
                 ),
+              ),
             ),
           ],
         );
@@ -270,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: const Text(
                               "Forgot Password?",
                               style: TextStyle(
-                                color: Color.fromARGB(255, 3, 130, 49),
+                                color: Color.fromARGB(255, 5, 92, 242),
                                 fontSize: 17,
                               ),
                             ),
@@ -299,6 +313,37 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 15),
+                        const Text(
+                          '-- OR --',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        ElevatedButton.icon(
+                          onPressed: _signInWithGoogle,
+                          icon: Image.asset(
+                            'assets/images/google_icon.png',
+                            height: 24,
+                            width: 24,
+                          ),
+                          label: const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 22, 21, 21),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 25),
                         GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(
@@ -321,7 +366,7 @@ class _LoginPageState extends State<LoginPage> {
                                 TextSpan(
                                   text: "Sign Up",
                                   style: TextStyle(
-                                    color: Color.fromARGB(255, 3, 130, 49),
+                                    color: Color.fromARGB(255, 23, 66, 238),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20,
                                   ),

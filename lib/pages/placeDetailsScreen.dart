@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trek_mate/models/homePage_model.dart';
+import 'package:video_player/video_player.dart';
 
 class PlaceDetailsPage extends StatefulWidget {
   final TravelDestination destination;
@@ -12,38 +13,87 @@ class PlaceDetailsPage extends StatefulWidget {
 
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   int _currentPageIndex = 0;
+  final Map<int, VideoPlayerController> _videoControllers = {};
+  final Map<int, bool> _isVideoInitialized = {};
+
+  @override
+  void dispose() {
+    _videoControllers.values.forEach((controller) {
+      controller.dispose();
+    });
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: Text(widget.destination.name),
-  backgroundColor: const Color.fromARGB(255, 213, 236, 237), 
-  elevation: 0, 
-  toolbarHeight: 30,
-  titleTextStyle: TextStyle(
-    color: const Color.fromARGB(255, 75, 72, 72), 
-    fontSize: 16,
-    // fontStyle: FontStyle.italic,
-    fontFamily: "Haloberry"
-  ),
-),
+        title: Text(widget.destination.name),
+        backgroundColor: const Color.fromARGB(255, 213, 236, 237),
+        elevation: 0,
+        toolbarHeight: 30,
+        titleTextStyle: const TextStyle(
+          color: Color.fromARGB(255, 75, 72, 72),
+          fontSize: 16,
+          fontFamily: "Haloberry",
+        ),
+      ),
       body: Column(
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
             child: PageView.builder(
-              itemCount: widget.destination.image?.length ?? 0,
+              itemCount: widget.destination.media?.length ?? 0,
               onPageChanged: (index) {
                 setState(() {
                   _currentPageIndex = index;
                 });
               },
               itemBuilder: (context, index) {
-                return Image.asset(
-                  widget.destination.image![index],
-                  fit: BoxFit.cover,
-                );
+                if (widget.destination.media![index].toString().endsWith('.mp4')) {
+                  // Display video
+                  if (!_videoControllers.containsKey(index)) {
+                    // Initialize if not already initialized
+                    _videoControllers[index] =
+                        VideoPlayerController.asset(widget.destination.media![index]);
+
+                    _videoControllers[index]!.initialize().then((_) {
+                      setState(() {
+                        _isVideoInitialized[index] = true;
+                        _videoControllers[index]!.play(); 
+                      });
+                    });
+
+                    _videoControllers[index]!.addListener(() {
+                      if (_videoControllers[index]!.value.hasError) {
+                        print("Video error: ${_videoControllers[index]!.value.errorDescription}");
+                      }
+                    });
+                  }
+
+                  return _isVideoInitialized[index] == true
+                      ? GestureDetector( // Wrap with GestureDetector
+                          onTap: () {
+                            setState(() {
+                              if (_videoControllers[index]!.value.isPlaying) {
+                                _videoControllers[index]!.pause();
+                              } else {
+                                _videoControllers[index]!.play();
+                              }
+                            });
+                          },
+                          child: AspectRatio(
+                            aspectRatio: _videoControllers[index]!.value.aspectRatio,
+                            child: VideoPlayer(_videoControllers[index]!),
+                          ),
+                        )
+                      : const Center(child: CircularProgressIndicator());
+                } else {
+                  return Image.asset(
+                    widget.destination.media![index],
+                    fit: BoxFit.cover,
+                  );
+                }
               },
             ),
           ),
@@ -53,7 +103,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                widget.destination.image?.length ?? 0,
+                widget.destination.media?.length ?? 0,
                 (index) => Container(
                   width: 8,
                   height: 8,
@@ -98,7 +148,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       ),
       child: InkWell(
         onTap: () {
-          //  navigation logic ...:)
+          // navigation logic ...:)
         },
         borderRadius: BorderRadius.circular(10),
         child: Column(
