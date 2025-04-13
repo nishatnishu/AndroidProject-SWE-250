@@ -17,12 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedPage = 0;
   String searchQuery = "";
   bool isSearching = false;
+  bool showAllPopular = false;
+  bool showAllRecommend = false;
+
   final TextEditingController searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   List<IconData> icons = [
     Iconsax.home1,
-    //Iconsax.search_normal,
     Icons.confirmation_number_outlined,
     Icons.bookmark_outline,
     Icons.person_outline,
@@ -36,13 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
       .where((element) => element.category == "recommend")
       .toList();
 
-  List<TravelDestination> get filteredPopular => popular
-      .where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase()))
-      .toList();
+  List<TravelDestination> get filteredPopular {
+    final filtered = popular.where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+    return showAllPopular ? filtered : filtered.take(4).toList();
+  }
 
-  List<TravelDestination> get filteredRecommend => recommend
-      .where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase()))
-      .toList();
+  List<TravelDestination> get filteredRecommend {
+    final filtered = recommend.where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+    return showAllRecommend ? filtered : filtered.take(5).toList();
+  }
 
   @override
   void dispose() {
@@ -59,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          // Search bar (only visible when searching)
           if (isSearching)
             SliverToBoxAdapter(
               child: Padding(
@@ -82,18 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-          
-          // Popular Places Section
+
+          // --- POPULAR SECTION ---
           SliverToBoxAdapter(
             child: Column(
               children: [
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Popular Place",
                         style: TextStyle(
                           fontSize: 20,
@@ -101,12 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.black,
                         ),
                       ),
-                      Text(
-                        "See all",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: blueTextColor,
+                      GestureDetector(
+                        onTap: () {
+                          setState(() => showAllPopular = !showAllPopular);
+                        },
+                        child: Text(
+                          showAllPopular ? "Show less" : "See all",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: blueTextColor,
+                          ),
                         ),
                       ),
                     ],
@@ -114,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 15),
                 SizedBox(
-                  height: 240, // Fixed height for popular places
+                  height: 240,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.only(bottom: 40),
@@ -138,15 +146,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          
-          // Recommendations Section
+
+          // --- RECOMMENDATION SECTION ---
           SliverToBoxAdapter(
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Recommendation for you♡",
                     style: TextStyle(
                       fontSize: 20,
@@ -154,20 +162,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    "See all",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: blueTextColor,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() => showAllRecommend = !showAllRecommend);
+                    },
+                    child: Text(
+                      showAllRecommend ? "Show less" : "See all",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: blueTextColor,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          
-          // Recommendations List
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => Padding(
@@ -187,15 +198,12 @@ class _HomeScreenState extends State<HomeScreen> {
               childCount: filteredRecommend.length,
             ),
           ),
-          
-          // Extra space at bottom
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 80),
-          ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 80)),
         ],
       ),
-      
-      // Bottom Navigation Bar
+
+      // --- BOTTOM NAVIGATION ---
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 9),
         margin: const EdgeInsets.all(15),
@@ -229,25 +237,11 @@ class _HomeScreenState extends State<HomeScreen> {
       leading: const Row(
         children: [
           SizedBox(width: 13),
-          Icon(
-            Iconsax.location,
-            color: Color.fromARGB(237, 224, 23, 8),
-            size: 24,
-          ),
+          Icon(Iconsax.location, color: Color.fromARGB(237, 224, 23, 8), size: 24),
           SizedBox(width: 5),
-          Text(
-            "Bangladesh",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          Icon(
-            Icons.keyboard_arrow_down,
-            size: 30,
-            color: Colors.black26,
-          ),
+          Text("Bangladesh",
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.black)),
+          Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.black26),
         ],
       ),
       actions: [
@@ -272,11 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Stack(
             children: [
               Icon(Iconsax.notification, color: Colors.black, size: 30),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: CircleAvatar(radius: 3, backgroundColor: Colors.red),
-              ),
+              Positioned(top: 5, right: 5, child: CircleAvatar(radius: 3, backgroundColor: Colors.red)),
             ],
           ),
         ),

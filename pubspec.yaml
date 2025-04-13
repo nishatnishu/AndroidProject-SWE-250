@@ -40,6 +40,7 @@ dependencies:
   firebase_auth: ^5.5.1 
   google_sign_in: ^6.3.0
   sign_in_button: ^3.2.0
+  url_launcher: ^6.3.1
   
   
 
@@ -90,6 +91,18 @@ flutter:
     - assets/images/popularPlace/Pokhara02.jpeg
     - assets/images/popularPlace/Pokhara03.jpeg
     - assets/images/popularPlace/Pokhara04.jpeg
+    - assets/images/popularPlace/Langtang01.jpg
+    - assets/images/popularPlace/Langtang02.jpg
+    - assets/images/popularPlace/Lumbini01.png
+    - assets/images/popularPlace/Lumbini02.jpg
+    - assets/images/popularPlace/Lumbini03.png
+    - assets/images/popularPlace/Lumbini04.jpg
+    - assets/images/popularPlace/ManasluCircuit01.jpg
+    - assets/images/popularPlace/ManasluCircuit02.jpg
+    - assets/images/popularPlace/ManasluCircuit03.jpg
+    - assets/images/popularPlace/RaraLake01.png
+    - assets/images/popularPlace/RaraLake02.jpg
+    - assets/images/popularPlace/RaraLake03.jpg
     - assets/images/recommendedPlace/Annapurna01.jpeg
     - assets/images/recommendedPlace/Annapurna02.jpeg
     - assets/images/recommendedPlace/Annapurna03.jpeg
@@ -105,11 +118,33 @@ flutter:
     - assets/images/recommendedPlace/Pushpatinath01.jpeg
     - assets/images/recommendedPlace/Pushpatinath02.jpeg
     - assets/images/recommendedPlace/Pushpatinath03.jpg
+    - assets/images/recommendedPlace/UpperMustang01.png
+    - assets/images/recommendedPlace/UpperMustang02.png
+    - assets/images/recommendedPlace/UpperMustang03.png
+    - assets/images/recommendedPlace/Janakpur01.png
+    - assets/images/recommendedPlace/Janakpur02.png
+    - assets/images/recommendedPlace/Janakpur03.png
+    - assets/images/recommendedPlace/Bardiya01.png
+    - assets/images/recommendedPlace/Bardiya02.png
+    - assets/images/recommendedPlace/Bardiya03.png
+    - assets/images/recommendedPlace/Bardiya04.png
+    - assets/images/recommendedPlace/Illam01.png
+    - assets/images/recommendedPlace/Illam02.png
+    - assets/images/recommendedPlace/Dharan01.png
+    - assets/images/recommendedPlace/Dharan02.png
+    - assets/images/recommendedPlace/Bandipur01.png
+    - assets/images/recommendedPlace/Bandipur02.png
+    - assets/images/recommendedPlace/Bandipur03.png
+    - assets/images/recommendedPlace/Langtang01.png
+    - assets/images/recommendedPlace/Langtang02.png
+    - assets/images/recommendedPlace/Langtang03.png
     - assets/images/Waiting.gif
     - assets/images/google_icon.png
     - assets/videos/EverestVideo.mp4
     - assets/videos/Annapurna.mp4
     - assets/videos/Kathmandu.mp4
+    - assets/videos/Langtang.mp4
+    - assets/videos/Janakpur.mp4
     
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

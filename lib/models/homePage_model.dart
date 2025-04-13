@@ -63,7 +63,7 @@ List<TravelDestination> myDestination = [
     rate: 4.8,
   ),
   TravelDestination(
-    id: 4, 
+    id: 3, 
     name: "Pokhara",
     category: "popular",
     media: [
@@ -78,8 +78,24 @@ List<TravelDestination> myDestination = [
     description: description,
     rate: 4.8,
   ),
+  
+TravelDestination(
+    id: 4,
+    name: "Langtang Valley",
+    category: "popular",
+    media: [
+      "assets/images/popularPlace/Langtang01.jpg",
+            "assets/videos/Langtang.mp4", 
+      "assets/images/popularPlace/Langtang02.jpg",
+    ],
+    location: "Rasuwa District, Nepal",
+    review: random.nextInt(300) + 25,
+    price: 450,
+        description: description,
+            rate: 4.7,
+  ),
   TravelDestination(
-    id: 3, 
+    id: 5, 
     name: "Karnali River",
     category: "popular",
     media: [
@@ -95,7 +111,43 @@ List<TravelDestination> myDestination = [
     rate: 4.7,
   ),
   TravelDestination(
-  id: 7,
+    id: 6,
+    name: "Lumbini",
+    category: "popular",
+    media: [
+      "assets/images/WorldPeacePagoda.jpg",
+      "assets/images/popularPlace/Lumbini01.jpg",
+      "assets/images/popularPlace/Lumbini02.jpg",
+      "assets/images/popularPlace/Lumbini03.jpg",
+      "assets/images/popularPlace/Lumbini04.jpg",
+    ],
+    location: "Rupandehi District, Nepal",
+    review: random.nextInt(300) + 25,
+    price: 120,
+        description: description,
+            rate: 4.6,
+  ),
+  TravelDestination(
+    id: 7,
+    name: "Manaslu Circuit",
+    category: "popular",
+    media: [
+      "assets/images/popularPlace/ManasluCircuit01.jpg",
+      "assets/images/popularPlace/ManasluCircuit02.jpg",
+      "assets/images/popularPlace/ManasluCircuit03.jpg",
+    ],
+    location: "Gorkha District, Nepal",
+    review: random.nextInt(300) + 25,
+    price: 750,
+        description: description,
+            rate: 4.8,
+  ),
+
+  
+
+  //Recommended Places...
+  TravelDestination(
+  id: 9,
   name: "Bhaktapur",
   category: "recommend",
   media: [
@@ -112,7 +164,7 @@ List<TravelDestination> myDestination = [
   rate: 4.6,
 ),
 TravelDestination(
-  id: 8,
+  id: 10,
   name: "Annapurna",
   category: "recommend",
   media: [
@@ -129,7 +181,7 @@ TravelDestination(
 ),
 
 TravelDestination(
-  id: 9,
+  id: 11,
   name: "Chitwan National Park",
   category: "recommend",
   media: [
@@ -144,9 +196,76 @@ TravelDestination(
   description: description,
   rate: 4.5,
 ),
+TravelDestination(
+  id: 19,  
+  name: "Langtang Valley",
+  category: "recommend", 
+  media: [
+    "assets/images/recommendedPlace/Langtang01.png",
+    "assets/videos/Langtang.mp4",
+    "assets/images/recommendedPlace/Langtang02.png",    
+    "assets/images/recommendedPlace/Langtang03.png",    
 
-  TravelDestination(
-  id: 10,
+  ],
+  location: "Rasuwa District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 450,
+  description: description,
+  rate: 4.7,
+),
+  
+TravelDestination(
+  id: 13,
+  name: "Upper Mustang",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/UpperMustang01.png",
+    "assets/images/recommendedPlace/UpperMustang02.png",
+    "assets/images/recommendedPlace/UpperMustang03.png",
+  ],
+  location: "Mustang District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 899,
+  description: description,
+  rate: 4.9,  
+),
+
+TravelDestination(
+  id: 14,
+  name: "Janakpur",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/Janakpur01.png",
+    "assets/videos/Janakpur.mp4",
+    "assets/images/recommendedPlace/Janakpur02.png",
+    "assets/images/recommendedPlace/Janakpur03.png",
+    
+  ],
+  location: "Dhanusa District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 180,
+  description: description,
+  rate: 4.6,
+),
+
+TravelDestination(
+  id: 15,
+  name: "Bardiya National Park",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/Bardiya01.png",
+    "assets/images/recommendedPlace/Bardiya02.png",
+    "assets/images/recommendedPlace/Bardiya03.png",
+    "assets/images/recommendedPlace/Bardiya04.png",
+  ],
+  location: "Bardiya District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 300,
+  description: description,
+  rate: 4.5,
+),
+TravelDestination(
+  id: 12,
   name: "Pashupatinath Temple",
   category: "recommend",
  media: [
@@ -159,6 +278,52 @@ TravelDestination(
   price: 100,
   description: description,
   rate: 4.7,
+),
+
+TravelDestination(
+  id: 16,
+  name: "Ilam",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/Illam01.png",
+    "assets/images/recommendedPlace/Illam02.png",
+  ],
+  location: "Ilam District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 220,
+  description: description,
+  rate: 4.4,
+),
+
+TravelDestination(
+  id: 17,
+  name: "Dharan",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/Dharan01.png",
+    "assets/images/recommendedPlace/Dharan02.png",
+  ],
+  location: "Sunsari District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 170,
+  description: description,
+  rate: 4.3,
+),
+
+TravelDestination(
+  id: 18,
+  name: "Bandipur",
+  category: "recommend",
+  media: [
+    "assets/images/recommendedPlace/Bandipur01.png",
+    "assets/images/recommendedPlace/Bandipur02.png",
+    "assets/images/recommendedPlace/Bandipur03.png",
+  ],
+  location: "Tanahun District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 200,
+  description: description,
+  rate: 4.4,
 ),
 
 
