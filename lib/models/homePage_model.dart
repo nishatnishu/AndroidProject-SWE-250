@@ -80,20 +80,22 @@ List<TravelDestination> myDestination = [
   ),
   
 TravelDestination(
-    id: 4,
-    name: "Langtang Valley",
-    category: "popular",
-    media: [
-      "assets/images/popularPlace/Langtang01.jpg",
-            "assets/videos/Langtang.mp4", 
-      "assets/images/popularPlace/Langtang02.jpg",
-    ],
-    location: "Rasuwa District, Nepal",
-    review: random.nextInt(300) + 25,
-    price: 450,
-        description: description,
-            rate: 4.7,
-  ),
+  id: 19,  
+  name: "Langtang Valley",
+  category: "popular", 
+  media: [
+    "assets/images/recommendedPlace/Langtang01.png",
+    "assets/videos/Langtang.mp4",
+    "assets/images/recommendedPlace/Langtang02.png",    
+    "assets/images/recommendedPlace/Langtang03.png",    
+
+  ],
+  location: "Rasuwa District, Nepal",
+  review: random.nextInt(300) + 25,
+  price: 450,
+  description: description,
+  rate: 4.7,
+),
   TravelDestination(
     id: 5, 
     name: "Karnali River",
@@ -196,23 +198,7 @@ TravelDestination(
   description: description,
   rate: 4.5,
 ),
-TravelDestination(
-  id: 19,  
-  name: "Langtang Valley",
-  category: "recommend", 
-  media: [
-    "assets/images/recommendedPlace/Langtang01.png",
-    "assets/videos/Langtang.mp4",
-    "assets/images/recommendedPlace/Langtang02.png",    
-    "assets/images/recommendedPlace/Langtang03.png",    
 
-  ],
-  location: "Rasuwa District, Nepal",
-  review: random.nextInt(300) + 25,
-  price: 450,
-  description: description,
-  rate: 4.7,
-),
   
 TravelDestination(
   id: 13,

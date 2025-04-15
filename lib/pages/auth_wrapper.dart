@@ -4,6 +4,8 @@ import 'package:trek_mate/pages/homeScreen.dart';
 import 'package:trek_mate/pages/loginPage.dart';
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(

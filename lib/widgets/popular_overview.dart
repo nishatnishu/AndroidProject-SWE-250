@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:trek_mate/models/homePage_model.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 

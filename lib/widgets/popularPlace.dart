@@ -75,7 +75,7 @@ class _PopularPlaceState extends State<PopularPlace> {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Container(
+            child: SizedBox(
               height: 210,
               width: MediaQuery.of(context).size.width * 0.75,
               child: _isVideo

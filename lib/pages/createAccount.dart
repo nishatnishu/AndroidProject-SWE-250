@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trek_mate/pages/homeScreen.dart';
 import 'package:trek_mate/pages/email_verification_page.dart'; // Import the new EmailVerificationPage
 
 class CreateAccountPage extends StatefulWidget {

@@ -3,6 +3,9 @@ import 'package:trek_mate/models/homePage_model.dart';
 import 'package:video_player/video_player.dart';
 import 'package:trek_mate/widgets/popular_overview.dart';
 import 'package:trek_mate/widgets/recommended_overview.dart';
+import 'package:trek_mate/widgets/adventure_overview.dart';
+import 'package:trek_mate/widgets/tips.dart';
+import 'package:trek_mate/widgets/culture_overview.dart';
 
 class PlaceDetailsPage extends StatefulWidget {
   final TravelDestination destination;
@@ -184,13 +187,13 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       case "Food":
         return _buildFoodSection();
       case "Adventures":
-        return _buildAdventuresSection();
+        return AdventureOverview(destination: widget.destination);
       case "Stay":
         return _buildStaySection();
       case "Culture":
-        return _buildCultureSection();
+return CultureOverview(destination: widget.destination);
       case "Tips":
-        return _buildTipsSection();
+        return TipsOverview(destination: widget.destination);
       default:
         return Container();
     }

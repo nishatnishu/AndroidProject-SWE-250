@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _showForgotPasswordDialog() async {
-    final TextEditingController _resetEmailController = TextEditingController();
+    final TextEditingController resetEmailController = TextEditingController();
 
     return showDialog(
       context: context,
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _resetEmailController,
+                controller: resetEmailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -138,10 +138,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                if (_resetEmailController.text.isNotEmpty) {
+                if (resetEmailController.text.isNotEmpty) {
                   try {
                     await FirebaseAuth.instance.sendPasswordResetEmail(
-                      email: _resetEmailController.text,
+                      email: resetEmailController.text,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

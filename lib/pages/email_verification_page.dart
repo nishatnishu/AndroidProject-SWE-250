@@ -5,7 +5,7 @@ import 'package:trek_mate/pages/homeScreen.dart';
 class EmailVerificationPage extends StatefulWidget {
   final User user;
 
-  const EmailVerificationPage({Key? key, required this.user}) : super(key: key);
+  const EmailVerificationPage({super.key, required this.user});
 
   @override
   _EmailVerificationPageState createState() => _EmailVerificationPageState();

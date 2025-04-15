@@ -66,7 +66,7 @@ class _RecommendedPlaceState extends State<RecommendedPlace> {
         ),
         child: Row(
           children: [
-            Container(
+            SizedBox(
               height: 95,
               width: 110,
               child: _isVideo
