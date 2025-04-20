@@ -6,7 +6,7 @@ import 'package:trek_mate/widgets/recommended_overview.dart';
 import 'package:trek_mate/widgets/adventure_overview.dart';
 import 'package:trek_mate/widgets/tips.dart';
 import 'package:trek_mate/widgets/culture_overview.dart';
-
+import 'package:trek_mate/widgets/stay_overview.dart';
 class PlaceDetailsPage extends StatefulWidget {
   final TravelDestination destination;
 
@@ -189,7 +189,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       case "Adventures":
         return AdventureOverview(destination: widget.destination);
       case "Stay":
-        return _buildStaySection();
+        return StayOverview(destination: widget.destination);
       case "Culture":
 return CultureOverview(destination: widget.destination);
       case "Tips":

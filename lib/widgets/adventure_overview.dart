@@ -108,7 +108,7 @@ class AdventureOverview extends StatelessWidget {
     switch (placeName) {
       case "Mt. Everest":
         return [
-          {'name': 'Trekking', 'imageUrl': 'https://media.gettyimages.com/id/1011456046/photo/nepal-solo-khumbu-everest-sagamartha-national-park-roped-team-ascending-wearing-oxigen-masks.jpg?s=612x612&w=gi&k=20&c=QueOFVEGFOb2dh617cWNnu1eFmE9ZLGbkjk_9AB1PIU='},
+          {'name': 'Trekking', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVFvVuW5nHkER3aGQVsBHMRhpV8l7HM_0JxQ&s'},
           {'name': 'Climbing', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvMLjHfg-b7xUZ_jzUon0S0Xak7Zk2CkCuIfhkc1QFvLQp1IwFaZ5OaKJs8yAoa-IeFFE&usqp=CAU'},
           {'name': 'Heli Tour', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSlof7vQTRXGCCLoRSCGR8G2cIKKM_aRIZVw&s'},
         ];

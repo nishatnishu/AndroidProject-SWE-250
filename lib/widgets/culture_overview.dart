@@ -9,17 +9,15 @@ class CultureOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final culturalData = _getCulturalData(destination.name);
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Cultural Hero Section
           _buildHeroSection(context, culturalData),
           const SizedBox(height: 24),
-          
-          // Cultural Highlights
+
           _buildSectionTitle("Cultural Highlights"),
           const SizedBox(height: 8),
           Text(
@@ -28,7 +26,6 @@ class CultureOverview extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Cultural Sections
           _buildCultureSection(
             icon: Icons.people,
             title: "People & Traditions",
@@ -71,17 +68,18 @@ class CultureOverview extends StatelessWidget {
       ),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+         padding: const EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 0),
           child: Text(
             culturalData['title']!,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: 30,
               fontWeight: FontWeight.bold,
+              fontFamily: 'CheeseOrange-Regular', 
               color: Colors.white,
               shadows: [
                 Shadow(
-                  blurRadius: 10,
+                  blurRadius: 20,
                   color: Colors.black,
                   offset: Offset(2, 2),
                 ),
@@ -92,7 +90,6 @@ class CultureOverview extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildSectionTitle(String title) {
     return Text(
@@ -189,7 +186,6 @@ class CultureOverview extends StatelessWidget {
         'cuisine': "• Juju Dhau: King Curd, the famous Bhaktapur yogurt\n• Bara: Savory lentil pancakes\n• Yomari: Sweet rice flour dumplings\n• Newari feast platters with various meats and pickles",
         'etiquette': "• Remove shoes before entering temple areas\n• Ask permission before photographing artisans at work\n• Dress modestly in the old town area\n• Respect religious processions\n• Support local craftspeople by purchasing authentic goods"
       },
-
     };
 
     return data[placeName] ?? {
