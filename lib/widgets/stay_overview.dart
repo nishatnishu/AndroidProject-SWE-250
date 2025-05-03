@@ -1,34 +1,176 @@
 import 'package:flutter/material.dart';
 import 'package:trek_mate/models/homePage_model.dart';
 
-class StayOverview extends StatelessWidget {
+class StayOverview extends StatefulWidget {
   final TravelDestination destination;
 
   const StayOverview({super.key, required this.destination});
 
-  void _showBookingDialog(BuildContext context, String hotelName) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Booking Confirmation"),
-          content: Text("Your booking at $hotelName has been confirmed!"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
+  @override
+  State<StayOverview> createState() => _StayOverviewState();
+}
+
+class _StayOverviewState extends State<StayOverview> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  String? _currentHotelName;
+  bool _isBookingComplete = false;
+  bool _showBookingForm = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _showBookingFormDialog(BuildContext context, String hotelName) {
+    setState(() {
+      _currentHotelName = hotelName;
+      _showBookingForm = true;
+      _isBookingComplete = false;
+    });
+  }
+
+  Widget _buildBookingForm() {
+    return AlertDialog(
+      title: Text("Book $_currentHotelName"),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Full Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(labelText: 'Phone Number'),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  if (value.length < 10) {
+                    return 'Please enter a valid phone number';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            setState(() {
+              _showBookingForm = false;
+            });
+          },
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              Navigator.of(context).pop();
+              setState(() {
+                _isBookingComplete = true;
+                _showBookingForm = false;
+              });
+            }
+          },
+          child: const Text("Confirm"),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookingConfirmation() {
+    return AlertDialog(
+      title: const Text("Booking Confirmed"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Hotel: $_currentHotelName"),
+          Text("Name: ${_nameController.text}"),
+          Text("Email: ${_emailController.text}"),
+          Text("Phone: ${_phoneController.text}"),
+          const SizedBox(height: 16),
+          const Text("We'll contact you shortly with more details."),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _isBookingComplete = false;
+              _nameController.clear();
+              _emailController.clear();
+              _phoneController.clear();
+            });
+            Navigator.of(context).pop();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+          ),
+          child: const Text("Cancel Booking"),
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final stayOptions = _getStayOptions(destination.name);
+    if (_showBookingForm) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => _buildBookingForm(),
+        );
+      });
+    }
+
+    if (_isBookingComplete) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => _buildBookingConfirmation(),
+        );
+      });
+    }
+
+    final stayOptions = _getStayOptions(widget.destination.name);
     
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -36,7 +178,7 @@ class StayOverview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Where to Stay in ${destination.name}",
+            "Where to Stay in ${widget.destination.name}",
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -54,7 +196,7 @@ class StayOverview extends StatelessWidget {
   }
 
   Widget _buildAccommodationTypes() {
-    final types = _getAccommodationTypes(destination.name);
+    final types = _getAccommodationTypes(widget.destination.name);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,29 +322,29 @@ class StayOverview extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Align(
-            alignment: Alignment.centerRight, 
-            child: SizedBox( 
-              width: 90, 
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              alignment: Alignment.centerRight, 
+              child: SizedBox( 
+                width: 90, 
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    minimumSize: const Size(0, 36),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  minimumSize: const Size(0, 36),
-                ),
-                onPressed: () {
-                  _showBookingDialog(context, option['name'] ?? 'Hotel');
-                },
-                child: const Text(
-                  "Book now",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                  onPressed: () {
+                    _showBookingFormDialog(context, option['name'] ?? 'Hotel');
+                  },
+                  child: const Text(
+                    "Book now",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
                 ),
               ),
             ),
@@ -222,13 +364,12 @@ class StayOverview extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          _getStayTips(destination.name),
+          _getStayTips(widget.destination.name),
           style: TextStyle(color: Colors.grey[700]),
         ),
       ],
     );
   }
-
 
 List<String> _getAccommodationTypes(String placeName) {
   switch (placeName) {

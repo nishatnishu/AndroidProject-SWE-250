@@ -1,10 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:trek_mate/models/homePage_model.dart';
 
-class AdventureOverview extends StatelessWidget {
+class AdventureOverview extends StatefulWidget {
   final TravelDestination destination;
 
   const AdventureOverview({super.key, required this.destination});
+
+  @override
+  State<AdventureOverview> createState() => _AdventureOverviewState();
+}
+
+class _AdventureOverviewState extends State<AdventureOverview> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  bool _isBookingComplete = false;
+  bool _showBookingForm = false;
+
+@override
+void dispose() {
+  _nameController.dispose();
+  _emailController.dispose();
+  _phoneController.dispose();  
+  super.dispose();
+}
+  void _handleBooking() {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isBookingComplete = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,28 +47,234 @@ class AdventureOverview extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        // Adventure activities list
         _buildAdventureList(),
         const SizedBox(height: 24),
         Text(
-          "About ${destination.name} Adventures",
+          "About ${widget.destination.name} Adventures",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 12),
-        Text(
-          _getAdventureDescription(destination.name),
-          style: TextStyle(fontSize: 16, height: 1.5),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _getAdventureDescription(widget.destination.name),
+              style: TextStyle(fontSize: 16, height: 1.5),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "Tour Guide: ${_getTourGuideInfo(widget.destination.name)}",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "Contact: ${_getTourGuideContact(widget.destination.name)}",
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
         ),
+        const SizedBox(height: 24),
+        
+        // Booking Section
+        _isBookingComplete
+            ? _buildBookingConfirmation()
+            : _showBookingForm
+                ? _buildBookingForm()
+                : ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _showBookingForm = true;
+                      });
+                    },
+                    child: const Text("Book Now"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Blue color for the button
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    ),
+                  ),
       ],
     );
   }
 
+  Widget _buildBookingForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            controller: _nameController,
+            decoration: const InputDecoration(
+              labelText: 'Full Name',
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your name';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            controller: _emailController,
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              if (!value.contains('@')) {
+                return 'Please enter a valid email';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+TextFormField(
+  controller: _phoneController,
+  decoration: const InputDecoration(
+    labelText: 'Phone Number',
+    border: OutlineInputBorder(),
+  ),
+  keyboardType: TextInputType.phone,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your phone number';
+    }
+    if (value.length < 10) {
+      return 'Please enter a valid phone number';
+    }
+    return null;
+  },
+),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: _handleBooking,
+            child: const Text("Confirm Booking"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, // Blue color for the button
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _showBookingForm = false;
+              });
+            },
+            child: const Text("Cancel"),
+          ),
+        ],
+      ),
+    );
+  }
+
+ Widget _buildBookingConfirmation() {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.green[50],
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.green),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Booking is Done!",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text("Destination: ${widget.destination.name}"),
+        Text("Name: ${_nameController.text}"),
+        Text("Email: ${_emailController.text}"),
+        if (_phoneController.text.isNotEmpty)
+          Text("Phone: ${_phoneController.text}"),
+        const SizedBox(height: 16),
+        const Text(
+          "We'll contact you shortly with more details.",
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: SizedBox(
+            width: 150, // Set your desired width here
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _isBookingComplete = false;
+                  _showBookingForm = false;
+                  _nameController.clear();
+                  _emailController.clear();
+                  _phoneController.clear();
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: const Text("Cancel Booking"),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+  // Add these new methods for tour guide information
+  String _getTourGuideInfo(String placeName) {
+    switch (placeName) {
+      case "Mt. Everest":
+        return "Sherpa Mingma (10+ years experience)";
+      case "Pokhara":
+        return "Adventure Guru Raj (Paragliding expert)";
+      case "Langtang Valley":
+        return "Tamang Guide Collective";
+      case "Annapurna":
+        return "ACAP Certified Guides";
+      case "Chitwan National Park":
+        return "Jungle Safari Experts";
+      case "Upper Mustang":
+        return "Local Mustangi Guides";
+      default:
+        return "Local Expert Guide";
+    }
+  }
+
+  String _getTourGuideContact(String placeName) {
+    switch (placeName) {
+      case "Mt. Everest":
+        return "+977 9801234567";
+      case "Pokhara":
+        return "+977 9807654321";
+      case "Langtang Valley":
+        return "+977 9812345678";
+      case "Annapurna":
+        return "+977 9823456789";
+      case "Chitwan National Park":
+        return "+977 9834567890";
+      case "Upper Mustang":
+        return "+977 9845678901";
+      default:
+        return "+977 9800000000";
+    }
+  }
+
   Widget _buildAdventureList() {
-    // Get activities specific to this destination
-    final activities = _getDestinationActivities(destination.name);
+    final activities = _getDestinationActivities(widget.destination.name);
 
     return SizedBox(
       height: 120,
@@ -62,10 +296,9 @@ class AdventureOverview extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      activities[index]['imageUrl'], // Use 'imageUrl' key
+                      activities[index]['imageUrl'],
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        // Optional: Display a placeholder if the image fails to load
                         return Center(child: Icon(Icons.image_not_supported));
                       },
                     ),
