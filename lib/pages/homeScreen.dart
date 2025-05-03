@@ -14,6 +14,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // User Profile Data
+  final Map<String, dynamic> userProfile = {
+    'name': 'JERRY',
+    'email': 'abcd@gmail.com',
+    'photoUrl': 'https://i.pinimg.com/736x/e9/cd/33/e9cd3310df0be9dad8b64c2fa887d690.jpg',
+    'isOnline': true,
+  };
+
   int selectedPage = 0;
   String searchQuery = "";
   bool isSearching = false;
@@ -39,13 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
       .toList();
 
   List<TravelDestination> get filteredPopular {
-    final filtered = popular.where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
-    return showAllPopular ? filtered : filtered.take(4).toList();
+    return popular
+        .where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase()))
+        .take(showAllPopular ? popular.length : 4)
+        .toList();
   }
 
   List<TravelDestination> get filteredRecommend {
-    final filtered = recommend.where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
-    return showAllRecommend ? filtered : filtered.take(5).toList();
+    return recommend
+        .where((place) => place.name.toLowerCase().contains(searchQuery.toLowerCase()))
+        .take(showAllRecommend ? recommend.length : 5)
+        .toList();
   }
 
   @override
@@ -59,7 +71,79 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BackgroundColor,
-      appBar: headerParts(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leadingWidth: 170,
+        leading: const Row(
+          children: [
+            SizedBox(width: 13),
+            Icon(Iconsax.location, color: Color.fromARGB(237, 224, 23, 8), size: 24),
+            SizedBox(width: 5),
+            Text("Bangladesh",
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.black)),
+            Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.black26),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(isSearching ? Icons.close : Iconsax.search_normal, color: Colors.black),
+            onPressed: () {
+              setState(() {
+                isSearching = !isSearching;
+                if (!isSearching) {
+                  searchQuery = "";
+                  searchController.clear();
+                }
+              });
+            },
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Colors.black12),
+            ),
+            padding: const EdgeInsets.all(7),
+            child: const Stack(
+              children: [
+                Icon(Iconsax.notification, color: Colors.black, size: 30),
+                Positioned(
+                  top: 5, 
+                  right: 5, 
+                  child: CircleAvatar(radius: 3, backgroundColor: Colors.red)
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          // User Profile Avatar
+          GestureDetector(
+            onTap: () => _showProfileMenu(context),
+            child: Container(
+              padding: const EdgeInsets.only(right: 15),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundImage: NetworkImage(userProfile['photoUrl']),
+                child: userProfile['isOnline']
+                    ? Positioned(
+                        bottom: 5,
+                        right: 4,
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -69,11 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: TextField(
                   controller: searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
+                  onChanged: (value) => setState(() => searchQuery = value),
                   decoration: InputDecoration(
                     hintText: "Search destinations...",
                     prefixIcon: const Icon(Iconsax.search_normal),
@@ -86,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-          // --- POPULAR SECTION ---
+          // Popular Section
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -105,9 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          setState(() => showAllPopular = !showAllPopular);
-                        },
+                        onTap: () => setState(() => showAllPopular = !showAllPopular),
                         child: Text(
                           showAllPopular ? "Show less" : "See all",
                           style: const TextStyle(
@@ -131,14 +209,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: PopularPlace(
                         destination: filteredPopular[index],
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlaceDetailsPage(destination: filteredPopular[index]),
-                            ),
-                          );
-                        },
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaceDetailsPage(destination: filteredPopular[index]),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -147,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // --- RECOMMENDATION SECTION ---
+          // Recommendation Section
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -163,9 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      setState(() => showAllRecommend = !showAllRecommend);
-                    },
+                    onTap: () => setState(() => showAllRecommend = !showAllRecommend),
                     child: Text(
                       showAllRecommend ? "Show less" : "See all",
                       style: const TextStyle(
@@ -185,25 +259,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                 child: RecommendedPlace(
                   destination: filteredRecommend[index],
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PlaceDetailsPage(destination: filteredRecommend[index]),
-                      ),
-                    );
-                  },
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlaceDetailsPage(destination: filteredRecommend[index]),
+                    ),
+                  ),
                 ),
               ),
               childCount: filteredRecommend.length,
             ),
           ),
-
           const SliverToBoxAdapter(child: SizedBox(height: 80)),
         ],
       ),
-
-      // --- BOTTOM NAVIGATION ---
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 9),
         margin: const EdgeInsets.all(15),
@@ -229,49 +298,57 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar headerParts() {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.white,
-      leadingWidth: 170,
-      leading: const Row(
-        children: [
-          SizedBox(width: 13),
-          Icon(Iconsax.location, color: Color.fromARGB(237, 224, 23, 8), size: 24),
-          SizedBox(width: 5),
-          Text("Bangladesh",
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.black)),
-          Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.black26),
-        ],
+  void _showProfileMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              ),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundImage: NetworkImage(userProfile['photoUrl']),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    userProfile['name'],
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    userProfile['email'],
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('My Profile'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Sign Out'),
+              onTap: () => Navigator.pop(context),
+            ),
+          ],
+        ),
       ),
-      actions: [
-        IconButton(
-          icon: Icon(isSearching ? Icons.close : Iconsax.search_normal, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              isSearching = !isSearching;
-              if (!isSearching) {
-                searchQuery = "";
-                searchController.clear();
-              }
-            });
-          },
-        ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.black12),
-          ),
-          padding: const EdgeInsets.all(7),
-          child: const Stack(
-            children: [
-              Icon(Iconsax.notification, color: Colors.black, size: 30),
-              Positioned(top: 5, right: 5, child: CircleAvatar(radius: 3, backgroundColor: Colors.red)),
-            ],
-          ),
-        ),
-        const SizedBox(width: 15),
-      ],
     );
   }
 }

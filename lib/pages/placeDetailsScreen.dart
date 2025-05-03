@@ -7,6 +7,9 @@ import 'package:trek_mate/widgets/adventure_overview.dart';
 import 'package:trek_mate/widgets/tips.dart';
 import 'package:trek_mate/widgets/culture_overview.dart';
 import 'package:trek_mate/widgets/stay_overview.dart';
+import 'package:trek_mate/widgets/food_overview.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trek_mate/widgets/map_overview.dart';
 class PlaceDetailsPage extends StatefulWidget {
   final TravelDestination destination;
 
@@ -24,9 +27,9 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
 
   @override
   void dispose() {
-    _videoControllers.values.forEach((controller) {
+    for (var controller in _videoControllers.values) {
       controller.dispose();
-    });
+    }
     super.dispose();
   }
 
@@ -182,10 +185,13 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
         return widget.destination.category == "popular"
             ? PopularOverview(destination: widget.destination)
             : RecommendedOverview(destination: widget.destination);
-      case "Map":
-        return _buildMapSection();
+     case "Map":
+  return MapOverview(
+    destination: widget.destination,
+    //nearbyPlaces: widget.destination.nearbyPlaces,
+  );
       case "Food":
-        return _buildFoodSection();
+       return FoodOverview(destination: widget.destination);
       case "Adventures":
         return AdventureOverview(destination: widget.destination);
       case "Stay":
