@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trek_mate/models/homePage_model.dart';
 import 'package:trek_mate/pages/placeDetailsScreen.dart';
 import 'package:trek_mate/widgets/popularPlace.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:trek_mate/const.dart';
 import 'package:trek_mate/widgets/recommend.dart';
+import 'package:trek_mate/pages/user_profile.dart';
+import 'package:trek_mate/pages/onboard_travel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,15 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // User Profile Data
-  final Map<String, dynamic> userProfile = {
-    'name': 'JERRY',
-    'email': 'abcd@gmail.com',
-    'photoUrl': 'https://i.pinimg.com/736x/e9/cd/33/e9cd3310df0be9dad8b64c2fa887d690.jpg',
-    'isOnline': true,
-  };
+  final User? user = FirebaseAuth.instance.currentUser;
+  String _selectedCountry = 'Bangladesh';
+  final List<String> _countries = [
+    'Bangladesh', 'Nepal', 'India', 'Bhutan',
+    'Thailand', 'Indonesia', 'Malaysia', 'Vietnam'
+  ];
 
-  int selectedPage = 0;
   String searchQuery = "";
   bool isSearching = false;
   bool showAllPopular = false;
@@ -31,13 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  List<IconData> icons = [
-    Iconsax.home1,
-    Icons.confirmation_number_outlined,
-    Icons.bookmark_outline,
-    Icons.person_outline,
-  ];
-
   List<TravelDestination> popular = myDestination
       .where((element) => element.category == "popular")
       .toList();
@@ -45,6 +39,82 @@ class _HomeScreenState extends State<HomeScreen> {
   List<TravelDestination> recommend = myDestination
       .where((element) => element.category == "recommend")
       .toList();
+
+  @override
+  void initState() {
+    super.initState();
+    // No need to load from SharedPreferences anymore
+  }
+
+  void _showCountrySelection() {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const Text(
+              'Select Country',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _countries.length,
+                itemBuilder: (context, index) {
+                  final country = _countries[index];
+                  final isSelected = _selectedCountry == country;
+                  
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Iconsax.location, color: isSelected ? Colors.blue : Colors.grey),
+                      title: Text(
+                        country,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: isSelected ? Colors.blue : Colors.black,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? const Icon(Icons.check, color: Colors.blue)
+                          : null,
+                      onTap: () {
+                        setState(() => _selectedCountry = country);
+                        Navigator.pop(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 
   List<TravelDestination> get filteredPopular {
     return popular
@@ -65,6 +135,21 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.dispose();
     searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const TravelOnBoardingScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: ${e.toString()}')),
+      );
+    }
   }
 
   void _showNotificationPopup(BuildContext context) {
@@ -129,15 +214,26 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         leadingWidth: 170,
-        leading: const Row(
-          children: [
-            SizedBox(width: 13),
-            Icon(Iconsax.location, color: Color.fromARGB(237, 224, 23, 8), size: 24),
-            SizedBox(width: 5),
-            Text("Bangladesh",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.black)),
-            Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.black26),
-          ],
+        leading: GestureDetector(
+          onTap: _showCountrySelection,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 13),
+            child: Row(
+              children: [
+                const Icon(Iconsax.location, color: Color.fromARGB(237, 224, 23, 8), size: 24),
+                const SizedBox(width: 5),
+                Text(
+                  _selectedCountry,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: Colors.black
+                  ),
+                ),
+                const Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.black26),
+              ],
+            ),
+          ),
         ),
         actions: [
           IconButton(
@@ -152,7 +248,6 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
           ),
-          // Notification Button
           GestureDetector(
             onTap: () => _showNotificationPopup(context),
             child: Container(
@@ -177,29 +272,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(width: 10),
-          // User Profile Avatar
           GestureDetector(
             onTap: () => _showProfileMenu(context),
             child: Container(
               padding: const EdgeInsets.only(right: 15),
               child: CircleAvatar(
                 radius: 18,
-                backgroundImage: NetworkImage(userProfile['photoUrl']),
-                child: userProfile['isOnline']
-                    ? Positioned(
-                        bottom: 5,
-                        right: 4,
-                        child: Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                        ),
-                      )
-                    : null,
+                backgroundImage: NetworkImage(
+                  user?.photoURL ?? 'https://i.pinimg.com/736x/e9/cd/33/e9cd3310df0be9dad8b64c2fa887d690.jpg'
+                ),
+                child: user != null ? Positioned(
+                  bottom: 5,
+                  right: 4,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: user?.emailVerified ?? false ? Colors.green : Colors.orange,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
+                  ),
+                ) : null,
               ),
             ),
           ),
@@ -226,8 +320,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-
-          // Popular Section
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -283,8 +375,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
-          // Recommendation Section
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -331,30 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
               childCount: filteredRecommend.length,
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 80)),
+          const SliverToBoxAdapter(child: SizedBox(height: 20)),
         ],
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 9),
-        margin: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: ButtonColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-            icons.length,
-            (index) => GestureDetector(
-              onTap: () => setState(() => selectedPage = index),
-              child: Icon(
-                icons[index],
-                size: 32,
-                color: selectedPage == index ? Colors.white : Colors.white.withOpacity(0.4),
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -368,45 +436,97 @@ class _HomeScreenState extends State<HomeScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+            if (user != null) ...[
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                ),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(
+                        user!.photoURL ?? 'https://i.pinimg.com/736x/e9/cd/33/e9cd3310df0be9dad8b64c2fa887d690.jpg'
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      user!.displayName ?? 'Guest User',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      user!.email ?? 'No email available',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                    if (user!.emailVerified) ...[
+                      const SizedBox(height: 8),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.verified, color: Colors.green, size: 16),
+                          SizedBox(width: 4),
+                          Text('Verified', style: TextStyle(color: Colors.green)),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(userProfile['photoUrl']),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    userProfile['name'],
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    userProfile['email'],
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ],
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('My Profile'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileScreen(user: user!),
+                    ),
+                  );
+                },
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('My Profile'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Sign Out'),
-              onTap: () => Navigator.pop(context),
-            ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text('Sign Out', style: TextStyle(color: Colors.red)),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _signOut(context);
+                },
+              ),
+            ] else ...[
+              ListTile(
+                leading: const Icon(Icons.login),
+                title: const Text('Sign In'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/login');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_add),
+                title: const Text('Create Account'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/createAccount');
+                },
+              ),
+            ],
           ],
         ),
       ),
