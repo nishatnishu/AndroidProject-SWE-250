@@ -67,6 +67,60 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void _showNotificationPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/images/Notification.gif',
+                height: 150,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'NO NOTIFICATIONS 🔔',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'You have no new notifications',
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                ),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,21 +152,28 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.black12),
-            ),
-            padding: const EdgeInsets.all(7),
-            child: const Stack(
-              children: [
-                Icon(Iconsax.notification, color: Colors.black, size: 30),
-                Positioned(
-                  top: 5, 
-                  right: 5, 
-                  child: CircleAvatar(radius: 3, backgroundColor: Colors.red)
-                ),
-              ],
+          // Notification Button
+          GestureDetector(
+            onTap: () => _showNotificationPopup(context),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.black12),
+              ),
+              padding: const EdgeInsets.all(7),
+              child: const Stack(
+                children: [
+                  Icon(Iconsax.notification, color: Colors.black, size: 30),
+                  Positioned(
+                    top: 5, 
+                    right: 5, 
+                    child: CircleAvatar(
+                      radius: 3,
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(width: 10),

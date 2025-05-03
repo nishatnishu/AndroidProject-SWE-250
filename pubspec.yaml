@@ -151,6 +151,7 @@ flutter:
     - assets/videos/Kathmandu.mp4
     - assets/videos/Langtang.mp4
     - assets/videos/Janakpur.mp4
+    - assets/images/Notification.gif
     
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
