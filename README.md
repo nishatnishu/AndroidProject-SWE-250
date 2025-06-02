@@ -7,42 +7,62 @@ Welcome to TrekMate, an interactive mobile app that helps travelers discover, pl
 🔐 User Authentication & Profiles
 
 🔸 Secure email/password login
+
 🔸 Google Sign-In integration
+
 🔸 Email verification for new accounts
+
 🔸 Personalized user profiles to manage favorites and preferences
+
 
 
 🗺️ Destination Discovery
 
 📌 Popular Places – Browse trending destinations
+
 💡 Recommendations – Get curated travel suggestions
 
+
 🔍 Category-Based Exploration:
+
 🏞️ Adventure – Hiking, water sports, outdoor fun
+
 🏺 Culture – Museums, history, local traditions
+
 🍜 Food – Restaurants, street food, culinary delights
+
 🏨 Stays – Hotels, hostels, and unique accommodations
+
 
 
 🧰 Interactive Travel Tools
 
 🖼️ Place Details – Images, descriptions, and reviews
+
 🗺️ Maps Integration – View and navigate to locations easily
+
 🎒 Travel Tips – Expert advice for smart trip planning
+
 
 
 💖 User-Centric Experience
 
 🚀 Onboarding Screens – Guided setup for new users
+
 🏠 Home Screen – Personalized feed based on interests
+
 📌 Saved Places – Bookmark and revisit favorite spots
+
 
 
 🛠️ Tech Stack
 
 💙 Flutter – Cross-platform mobile development
+
 🔥 Firebase – Authentication and real-time data
+
 📍 Google Maps API – For maps and location features
+
 
 ## Getting Started
 
