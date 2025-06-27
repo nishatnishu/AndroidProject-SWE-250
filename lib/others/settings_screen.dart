@@ -436,7 +436,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             IconButton(
               icon: const Icon(Icons.star),
               onPressed: () {
-                // Rate app implementation
+                
               },
             ),
           ],
