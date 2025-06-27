@@ -188,7 +188,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
      case "Map":
   return MapOverview(
     destination: widget.destination,
-    //nearbyPlaces: widget.destination.nearbyPlaces,
+ 
   );
       case "Food":
        return FoodOverview(destination: widget.destination);

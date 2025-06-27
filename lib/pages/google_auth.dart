@@ -26,7 +26,7 @@ class GoogleAuth {
       }
     } catch (e) {
       print('Error during Google Sign-In: $e');
-      rethrow; // Rethrow the error to handle it in the UI
+      rethrow; 
     }
   }
 
@@ -37,7 +37,7 @@ class GoogleAuth {
       print('User signed out');
     } catch (e) {
       print('Error signing out: $e');
-      rethrow; // Rethrow the error to handle it in the UI
+      rethrow; 
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:trek_mate/const.dart';
 import 'package:trek_mate/widgets/recommend.dart';
 import 'package:trek_mate/pages/user_profile.dart';
 import 'package:trek_mate/pages/onboard_travel.dart';
+import 'package:trek_mate/others/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -283,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: user != null ? Positioned(
                   bottom: 5,
-                  right: 4,
+                  right: 10,
                   child: Container(
                     width: 12,
                     height: 12,
@@ -487,19 +488,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SettingsScreen(),
-                    ),
-                  );
-                },
-              ),
+            ListTile(
+  leading: const Icon(Icons.settings),
+  title: const Text('Settings'),
+  onTap: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    );
+  },
+),
+
               const Divider(height: 1),
               ListTile(
                 leading: const Icon(Icons.logout, color: Colors.red),
