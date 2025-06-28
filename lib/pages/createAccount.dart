@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trek_mate/pages/email_verification_page.dart'; // Import the new EmailVerificationPage
+import 'package:trek_mate/pages/email_verification_page.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -13,6 +13,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
   bool _showCheckboxError = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -30,6 +32,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     super.dispose();
   }
 
+  
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    } else if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    } else if (!value.contains(RegExp(r'[A-Z]'))) {
+      return 'Password must contain at least one uppercase letter';
+    } else if (!value.contains(RegExp(r'[a-z]'))) {
+      return 'Password must contain at least one lowercase letter';
+    } else if (!value.contains(RegExp(r'[0-9]'))) {
+      return 'Password must contain at least one number';
+    } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      return 'Password must contain at least one special character';
+    }
+    return null;
+  }
+
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       if (!_isChecked) {
@@ -45,10 +65,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           password: _passwordController.text,
         );
 
-        // Send verification email
         await userCredential.user!.sendEmailVerification();
 
-        // Navigate to EmailVerificationPage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -162,7 +180,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: _passwordController,
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             labelText: 'Password',
@@ -171,14 +189,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             ),
                             filled: true,
                             fillColor: const Color.fromRGBO(255, 255, 255, 0.7),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                            ),
                           ),
-                          validator: (value) =>
-                              value == null || value.isEmpty ? "Password is required" : null,
+                          validator: _validatePassword,
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: _confirmPasswordController,
-                          obscureText: true,
+                          obscureText: _obscureConfirmPassword,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             labelText: 'Confirm Password',
@@ -187,6 +215,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             ),
                             filled: true,
                             fillColor: const Color.fromRGBO(255, 255, 255, 0.7),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureConfirmPassword = !_obscureConfirmPassword;
+                                });
+                              },
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
