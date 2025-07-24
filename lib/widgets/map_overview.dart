@@ -14,7 +14,6 @@ class MapOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check if coordinates exist
     if (destination.coordinates == null) {
       return const Center(child: Text("Location data not available"));
     }
@@ -28,8 +27,6 @@ class MapOverview extends StatelessWidget {
     );
 
     final Set<Marker> markers = {};
-
-    // Main marker
     markers.add(
       Marker(
         markerId: MarkerId(destination.id.toString()),
@@ -44,7 +41,6 @@ class MapOverview extends StatelessWidget {
       ),
     );
 
-    // Nearby places markers
     nearbyPlaces?.forEach((place) {
       if (place.coordinates != null) {
         markers.add(
