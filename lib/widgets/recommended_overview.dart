@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trek_mate/models/homePage_model.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'package:google_fonts/google_fonts.dart';
 
 class RecommendedOverview extends StatelessWidget {
   final TravelDestination destination;
@@ -9,7 +9,6 @@ class RecommendedOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Custom overview for recommended places
     String overviewText = _getRecommendedOverview(destination.name);
     List<String> activities = _getActivities(destination.name);
     String bestTimeToVisit = _getBestTimeToVisitRecommended(destination.name);
@@ -96,7 +95,6 @@ class RecommendedOverview extends StatelessWidget {
               const SizedBox(height: 10),
             ],
           ),
-        // Removed the Google link as requested
       ],
     );
   }
