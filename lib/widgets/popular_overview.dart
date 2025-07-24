@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trek_mate/models/homePage_model.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'package:google_fonts/google_fonts.dart'; 
 
 class PopularOverview extends StatefulWidget {
   final TravelDestination destination;
