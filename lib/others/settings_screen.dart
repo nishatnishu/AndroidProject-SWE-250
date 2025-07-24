@@ -31,7 +31,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          // Notification Settings
           _buildSettingsItem(
             context,
             icon: Icons.notifications,
@@ -40,8 +39,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _showNotificationSettings(context);
             },
           ),
-
-          // Language Settings
           _buildSettingsItem(
             context,
             icon: Icons.language,
@@ -51,8 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _showLanguageSelection(context);
             },
           ),
-
-          // Privacy & Security
           _buildSettingsItem(
             context,
             icon: Icons.security,
@@ -62,7 +57,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
 
-          // App Theme
           _buildSettingsItem(
             context,
             icon: Icons.color_lens,
@@ -75,7 +69,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
 
-          // Location Services
           _buildSettingsItem(
             context,
             icon: Icons.location_on,
@@ -95,7 +88,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
 
-          // Help & Support
           _buildSettingsItem(
             context,
             icon: Icons.help,
@@ -105,7 +97,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
 
-          // About App
           _buildSettingsItem(
             context,
             icon: Icons.info,
@@ -115,23 +106,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
 
-          // Rate App
           _buildSettingsItem(
             context,
             icon: Icons.star,
             title: 'Rate App',
             onTap: () {
-              // TODO: Add rate app logic
             },
           ),
 
-          // Share App
           _buildSettingsItem(
             context,
             icon: Icons.share,
             title: 'Share App',
             onTap: () {
-              // TODO: Add share app logic
             },
           ),
         ],
